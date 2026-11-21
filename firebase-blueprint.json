@@ -1,0 +1,205 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Registered DocMeds user account metadata and language preference.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID of the user." },
+        "displayName": { "type": "string", "description": "Full display name." },
+        "email": { "type": "string", "description": "Verified account email address." },
+        "phone": { "type": "string", "description": "Optional contact phone number." },
+        "preferredLanguage": { "type": "string", "enum": ["en", "ur"], "description": "UI language preference (en or ur)." },
+        "role": { "type": "string", "enum": ["CUSTOMER", "ADMIN"], "description": "Account role; admins managed by privileged rules." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update." }
+      },
+      "required": ["userId", "displayName", "email", "preferredLanguage", "role", "createdAt", "updatedAt"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Authoritative pharmacist administrator role record.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID of the administrator." },
+        "email": { "type": "string", "description": "Administrator email address." },
+        "displayName": { "type": "string", "description": "Pharmacist/Administrator display name." },
+        "roleLabel": { "type": "string", "description": "Regulatory title (e.g. Licensed Pharmacist)." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." }
+      },
+      "required": ["uid", "email", "displayName", "roleLabel", "createdAt"]
+    },
+    "DeliveryAddress": {
+      "title": "DeliveryAddress",
+      "description": "Customer saved delivery address for Cash on Delivery orders.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "label": { "type": "string" },
+        "recipientName": { "type": "string" },
+        "phone": { "type": "string" },
+        "street": { "type": "string" },
+        "city": { "type": "string" },
+        "landmark": { "type": "string" },
+        "defaultAddress": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "label", "recipientName", "phone", "street", "city", "defaultAddress", "createdAt", "updatedAt"]
+    },
+    "CartItem": {
+      "title": "CartItem",
+      "description": "Product entry in a customer's shopping cart.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "quantity": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productId", "quantity", "createdAt", "updatedAt"]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "Saved medicine item in a customer's wishlist.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productId", "createdAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Bilingual medicine catalog category.",
+      "type": "object",
+      "properties": {
+        "nameEn": { "type": "string" },
+        "nameUr": { "type": "string" },
+        "iconKey": { "type": "string" },
+        "sortOrder": { "type": "integer" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nameEn", "nameUr", "iconKey", "sortOrder", "active", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Pharmacy product catalog record with stock, pricing, and Rx requirement.",
+      "type": "object",
+      "properties": {
+        "nameEn": { "type": "string" },
+        "nameUr": { "type": "string" },
+        "genericName": { "type": "string" },
+        "manufacturer": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "descriptionEn": { "type": "string" },
+        "descriptionUr": { "type": "string" },
+        "packSize": { "type": "string" },
+        "pricePkr": { "type": "number" },
+        "discountPercent": { "type": "integer" },
+        "stock": { "type": "integer" },
+        "prescriptionRequired": { "type": "boolean" },
+        "popular": { "type": "boolean" },
+        "active": { "type": "boolean" },
+        "imageUrl": { "type": "string" },
+        "imageBase64": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nameEn", "nameUr", "genericName", "manufacturer", "categoryId", "descriptionEn", "descriptionUr", "packSize", "pricePkr", "discountPercent", "stock", "prescriptionRequired", "popular", "active", "createdAt", "updatedAt"]
+    },
+    "Prescription": {
+      "title": "Prescription",
+      "description": "Private customer prescription upload awaiting licensed pharmacist verification.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "imageBase64": { "type": "string" },
+        "patientNote": { "type": "string" },
+        "orderId": { "type": "string" },
+        "status": { "type": "string", "enum": ["PENDING_REVIEW", "APPROVED", "REJECTED"] },
+        "pharmacistNotes": { "type": "string" },
+        "reviewedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "customerName", "customerEmail", "imageBase64", "status", "createdAt", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Cash on Delivery pharmacy order with prescription verification and fulfillment status.",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string" },
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "addressLabel": { "type": "string" },
+        "recipientName": { "type": "string" },
+        "deliveryPhone": { "type": "string" },
+        "deliveryStreet": { "type": "string" },
+        "deliveryCity": { "type": "string" },
+        "deliveryLandmark": { "type": "string" },
+        "items": { "type": "array" },
+        "itemCount": { "type": "integer" },
+        "subtotalPkr": { "type": "number" },
+        "discountPkr": { "type": "number" },
+        "deliveryFeePkr": { "type": "number" },
+        "totalPkr": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["CASH_ON_DELIVERY"] },
+        "requiresPrescription": { "type": "boolean" },
+        "prescriptionId": { "type": "string" },
+        "prescriptionStatus": { "type": "string", "enum": ["NOT_REQUIRED", "PENDING_REVIEW", "APPROVED", "REJECTED"] },
+        "status": { "type": "string", "enum": ["AWAITING_RX_VERIFICATION", "CONFIRMED", "PACKED", "OUT_FOR_DELIVERY", "DELIVERED", "REJECTED", "CANCELLED"] },
+        "pharmacistNote": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderNumber", "userId", "customerName", "customerEmail", "addressLabel", "recipientName", "deliveryPhone", "deliveryStreet", "deliveryCity", "items", "itemCount", "subtotalPkr", "discountPkr", "deliveryFeePkr", "totalPkr", "paymentMethod", "requiresPrescription", "prescriptionStatus", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Customer and admin profile metadata."
+    },
+    "/admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Authoritative admin/pharmacist role registry."
+    },
+    "/users/{userId}/addresses/{addressId}": {
+      "schema": { "$ref": "#/entities/DeliveryAddress" },
+      "description": "Customer saved delivery addresses."
+    },
+    "/users/{userId}/cart/{productId}": {
+      "schema": { "$ref": "#/entities/CartItem" },
+      "description": "Customer persistent shopping cart items."
+    },
+    "/users/{userId}/wishlist/{productId}": {
+      "schema": { "$ref": "#/entities/WishlistItem" },
+      "description": "Customer persistent wishlist items."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Bilingual medicine categories."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Pharmacy medicines and health products."
+    },
+    "/prescriptions/{prescriptionId}": {
+      "schema": { "$ref": "#/entities/Prescription" },
+      "description": "Restricted prescription uploads for pharmacist review."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Cash on Delivery pharmacy orders."
+    }
+  }
+}
