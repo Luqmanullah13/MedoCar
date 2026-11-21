@@ -22,8 +22,8 @@ DocMeds is a bilingual (**English / اردو**) online pharmacy Android applicat
 
 ## Building the Debug APK
 
-1. Ensure JDK 17+ and Android SDK (API 36) are installed.
-2. Place your provisioned `app/google-services.json` and `app/src/main/res/values/firebase_applet_config.xml`.
+1. Ensure JDK 21 (or 17+) and Android SDK (API 36) are installed.
+2. Ensure `app/google-services.json` (with the OAuth 2.0 Web Client ID `client_type: 3` for `com.aistudio.docmeds.kxpqzm`) and `app/src/main/res/values/firebase_applet_config.xml` are present.
 3. Run:
    ```bash
    gradle :app:assembleDebug
@@ -32,6 +32,10 @@ DocMeds is a bilingual (**English / اردو**) online pharmacy Android applicat
 
 ## GitHub Actions CI
 Pushing to `main` or triggering **Actions → DocMeds Android Debug APK** automatically runs `:app:testDebugUnitTest` and `:app:assembleDebug`, publishing `docmeds-debug-apk` as a downloadable build artifact.
+
+- **Firebase Config in CI**: Commit `app/google-services.json` to the repository, or configure the `GOOGLE_SERVICES_JSON_BASE64` (or `GOOGLE_SERVICES_JSON`) GitHub Actions secret.
+- **Debug Signing in CI**: The workflow decodes `DEBUG_KEYSTORE_BASE64` (secret) or `debug.keystore.base64` (repo), and falls back to generating an ephemeral CI `debug.keystore` if neither is present.
+
 
 ## Firestore Rules Testing
 ```bash
